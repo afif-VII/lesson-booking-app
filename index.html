@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+  <title>Lesson booking app</title>
+</head>
+
+<body>
+  <div id="app">
+
+    <header>
+      <h1 v-text="sitename"></h1>
+
+      <button v-on:click="showCheckout">
+        {{itemsInCart}}
+        <span class="fa-solid fa-cart-shopping" style="color: #000000"></span>
+        Checkout
+      </button>
+    </header>
+
+
+    <main>
+      <div v-if="showLessons">
+        <figure>
+          <img class="lessonIcon" v-bind:src="lesson1.image" alt="Maths lesson">
+          <h2 v-text="lesson1.subject"></h1>
+          <p v-text="lesson1.location"></p>
+          <p>Price: £{{lesson1.price}}</p>
+
+          <button v-if="canAddToCart" v-on:click="addToCart">Add to cart</button>
+          <div v-else>
+            <button disabled>Add to cart</button>
+            All spaces booked
+          </div>
+        </div>
+        <div v-else>
+          <h1>Checkout page</h1>
+        </div>
+      </figure>
+
+    </main>
+
+  </div>
+
+  <script>
+    let webstore = new Vue({
+      el: "#app",
+      data: {
+        sitename: "Lesson booking app",
+        showLessons: true,
+        lesson1: {
+          id: 1001,
+          subject: "Maths",
+          location: "Room:  1",
+          price: 10,
+          image: "images/maths.png",
+          inventory: 5,
+
+        },
+
+        cart:[]
+
+      },
+
+      methods: {
+        showCheckout: function() {
+          this.showLessons = this.showLessons ? false:true
+        },
+
+        addToCart: function() {
+          this.cart.push(this.lesson1.id);
+        }
+
+      },
+      
+      computed: {
+        itemsInCart: function() {
+          return this.cart.length || "";
+        },
+        
+        canAddToCart: function() {
+          return this.lesson1.inventory > this.itemsInCart 
+        }
+
+
+      }
+      
+    
+    });
+  </script>
+
+</body>
+</html>

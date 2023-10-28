@@ -26,21 +26,48 @@
 
 
     <main>
-      <div v-if="showLessons">
+      <!--Lesson selection page, remember to remove !-->
+      
+      <div v-if="!showLessons">
         <figure>
           <img class="lessonIcon" v-bind:src="lesson1.image" alt="Maths lesson">
           <h2 v-text="lesson1.subject"></h1>
           <p v-text="lesson1.location"></p>
           <p>Price: £{{lesson1.price}}</p>
 
-          <button v-if="canAddToCart" v-on:click="addToCart">Add to cart</button>
+          <button v-if="anAddToCart" v-on:click="addToCart">Add to cart</button>
           <div v-else>
             <button disabled>Add to cart</button>
             All spaces booked
           </div>
         </div>
+      <!--Else statement when checkout button clicked-->
+      <!--Checkout page-->
+
         <div v-else>
           <h1>Checkout page</h1>
+          <p>
+            <strong>Name: </strong>
+            <input type="text" v-model.trim="order.name">
+          </p>
+
+          <p>
+            <strong>Mobile number: </strong>
+            <input type="number" v-model.trim="order.number">
+          </p>
+
+          <h2>Order information</h2>
+
+          <p>
+            <strong>Name: </strong> {{order.name}}          
+          </p>
+
+          <p>
+            <strong>Mobile number: </strong> {{order.number}}          
+          </p>
+
+          <button v-on:click="submitCheckoutForm">Place order</button>
+
         </div>
       </figure>
 
@@ -64,7 +91,11 @@
 
         },
 
-        cart:[]
+        cart:[],
+        order: {
+          name: "",
+          number:"",
+        }
 
       },
 
@@ -75,6 +106,10 @@
 
         addToCart: function() {
           this.cart.push(this.lesson1.id);
+        },
+
+        submitCheckoutForm() {
+          alert("Thank you, your order has been placed.")
         }
 
       },

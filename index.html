@@ -20,8 +20,8 @@
       <header>
         <h1 v-text="sitename"></h1>
 
-        <button v-on:click="showCheckout">
-          {{itemsInCart}}
+        <button v-on:click="showCheckout" v-bind:disabled="cart.length === 0">
+          {{ itemsInCart }}
           <span class="fa-solid fa-cart-shopping" style="color: #000000"></span>
           Checkout
         </button>

@@ -25,6 +25,8 @@
           <span class="fa-solid fa-cart-shopping" style="color: #000000"></span>
           Checkout
         </button>
+        <input type="text" v-model.trim="searchQuery" placeholder="Search lessons" />
+      </header>
       </header>
 
       <div v-if="showLessons">
@@ -91,13 +93,13 @@
         data: {
           sitename: "Lesson booking app",
           showLessons: true,
-
           lessons: lessons,
           cart: [],
           order: {
             name: "",
             number: "",
           },
+          searchQuery: "", // New property for search query
         },
 
         methods: {
@@ -130,7 +132,6 @@
                 count++;
               }
             }
-
             return count;
           },
 
@@ -151,7 +152,12 @@
               return 0;
             }
 
-            return this.lessons.sort(compare);
+            let filteredLessons = this.lessons.filter(lesson =>
+              lesson.subject.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+              lesson.location.toLowerCase().includes(this.searchQuery.toLowerCase())
+            );
+
+            return filteredLessons.sort(compare);
           },
 
           isButtonDisabled() {
@@ -163,4 +169,5 @@
       });
     </script>
   </body>
+
 </html>

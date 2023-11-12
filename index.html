@@ -56,10 +56,10 @@
     <!-- Else statement to show checkout page when clicked-->
     <div v-else>
 
-      <h1>Checkout page</h1>
+      <h1>Checkout page</h1> <br>
 
       <!-- Display lessons added to cart as list-->
-      <h2>Added Lessons</h2>
+      <h2>Added Lessons</h2> 
       <ul>
         <li v-for="lesson in addedLessons" :key="lesson.id">
           {{ lesson.subject }} - {{ lesson.location }} - £{{ lesson.price }}

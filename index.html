@@ -1,173 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
-    <link rel="stylesheet" href="css/style.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-    />
-    <script src="lessons.js"></script>
 
-    <title>Lesson booking app</title>
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <script src="lessons.js"></script>
+  <title>Lesson booking app</title>
+</head>
 
-  <body>
-    <div id="app">
-      <header>
-        <h1 v-text="sitename"></h1>
+<body>
+  <div id="app">
+    <header>
+      <h1 v-text="sitename"></h1>
 
-        <button v-on:click="showCheckout" v-bind:disabled="cart.length === 0">
-          {{ itemsInCart }}
-          <span class="fa-solid fa-cart-shopping" style="color: #000000"></span>
-          Checkout
-        </button>
-        <input type="text" v-model.trim="searchQuery" placeholder="Search lessons" />
-      </header>
-      </header>
+      <!-- Checkout button, disabled if no items in cart -->
+      <button v-on:click="showCheckout" v-bind:disabled="cart.length === 0">
+        {{ itemsInCart }}
+        <span class="fa-solid fa-cart-shopping" style="color: #000000"></span>
+        Checkout
+      </button>
+      <!-- Search box for users -->
+      <input type="text" v-model.trim="searchQuery" placeholder="Search lessons" />
+    </header>
+    </header>
 
-      <div v-if="showLessons">
-        <main>
-          <div v-for="lesson in sortedLessons">
-            <h2 v-text="lesson.subject"></h2>
+    <!-- If statement to display either lessons page or checkout page -->
+    <div v-if="showLessons">
+      <main>
+        <div v-for="lesson in sortedLessons">
+          <h2 v-text="lesson.subject"></h2>
 
-            <figure>
-              <img
-                class="lessonIcon"
-                v-bind:src="lesson.image"
-                alt="Maths lesson"
-              />
-            </figure>
+          <!-- Class for all lesson images-->
+          <figure>
+            <img class="lessonIcon" v-bind:src="lesson.image" alt="lesson image" />
+          </figure>
 
-            <p v-text="lesson.location"></p>
-            <p>Price: £{{lesson.price}}</p>
+          <p v-text="lesson.location"></p>
+          <p>Price: £{{lesson.price}}</p>
 
-            <button v-if="canAddToCart(lesson)" v-on:click="addToCart(lesson)">
-              Add to cart
-            </button>
-            <button v-else disabled>Add to cart</button>
+          <!-- Functionality for add to cart button-->
+          <button v-if="canAddToCart(lesson)" v-on:click="addToCart(lesson)">Add to cart</button>
+          <button v-else disabled>Add to cart</button>
 
-            <span v-if="itemsLeft(lesson) == 0">All spaces booked!</span>
-            <span v-else-if="itemsLeft(lesson) < 5"
-              >Only {{itemsLeft(lesson)}} spaces left!</span
-            >
-            <span v-else>Book now!</span>
-          </div>
-        </main>
-      </div>
-      <div v-else>
-        <h1>Checkout page</h1>
-
-        <p>
-          <strong>Name: </strong>
-          <input type="text" v-model.trim="order.name" v-on:input="validateName"/>
-        </p>
-
-        <p>
-          <strong>Mobile number: </strong>
-          <input type="number" v-model.trim="order.number" />
-        </p>
-
-        <h2>Order information</h2>
-
-        <p><strong>Name: </strong> {{order.name}}</p>
-
-        <p><strong>Mobile number: </strong> {{order.number}}</p>
-
-        <!-- <button v-on:click="submitCheckoutForm">Place order</button> -->
-        <button
-          v-on:click="submitCheckoutForm"
-          v-bind:disabled="isButtonDisabled"
-        >
-          Place order
-        </button>
-      </div>
+          <span v-if="itemsLeft(lesson) == 0">All spaces booked!</span>
+          <span v-else-if="itemsLeft(lesson) < 5">Only {{itemsLeft(lesson)}} spaces left!</span>
+          <span v-else>Book now!</span>
+        </div>
+      </main>
     </div>
 
-    <script>
-      let webstore = new Vue({
-        el: "#app",
-        data: {
-          sitename: "Lesson booking app",
-          showLessons: true,
-          lessons: lessons,
-          cart: [],
-          order: {
-            name: "",
-            number: "",
-          },
-          searchQuery: "", // New property for search query
+    <!-- Else statement to show checkout page when clicked-->
+    <div v-else>
+
+      <h1>Checkout page</h1>
+
+      <!-- Display lessons added to cart as list-->
+      <h2>Added Lessons</h2>
+      <ul>
+        <li v-for="lesson in addedLessons" :key="lesson.id">
+          {{ lesson.subject }} - {{ lesson.location }} - £{{ lesson.price }}
+        </li>
+      </ul>
+
+      <!-- Input fields for name and phone number with validation -->
+      <p>
+        <strong>Name: </strong>
+        <input type="text" v-model.trim="order.name" v-on:input="validateName" />
+      </p>
+
+      <p>
+        <strong>Mobile number: </strong>
+        <input type="number" v-model.trim="order.number" />
+      </p>
+
+      <h2>Order information</h2>
+
+      <!-- Displaying the name and number typed by user-->
+      <p><strong>Name: </strong> {{order.name}}</p>
+
+      <p><strong>Mobile number: </strong> {{order.number}}</p>
+
+      <!-- Place order button -->
+      <button v-on:click="submitCheckoutForm" v-bind:disabled="isButtonDisabled">
+        Place order
+      </button>
+    </div>
+  </div>
+
+  <!-- Vue.js -->
+  <script>
+    let webstore = new Vue({
+      el: "#app",
+      data: {
+        sitename: "Lesson booking app",
+        showLessons: true,
+        lessons: lessons,
+        cart: [],
+        order: {
+          name: "",
+          number: "",
+        },
+        searchQuery: "", // search box
+      },
+
+      // Methods
+      methods: {
+        showCheckout: function () {
+          this.showLessons = this.showLessons ? false : true; // toggle between lesson and checkout page
         },
 
-        methods: {
-          showCheckout: function () {
-            this.showLessons = this.showLessons ? false : true;
-          },
-
-          addToCart: function (lesson) {
-            this.cart.push(lesson.id);
-          },
-
-          submitCheckoutForm() {
-            if (!this.isButtonDisabled) {
-              alert("Thank you, your order has been placed.");
-            }
-          },
-
-          validateName() {
-            this.order.name = this.order.name.replace(/[^A-Za-z]/g, "");
-          },
-
-          canAddToCart: function (lesson) {
-            return lesson.inventory > this.cartCount(lesson.id);
-          },
-
-          cartCount(id) {
-            let count = 0;
-            for (let i = 0; i < this.cart.length; i++) {
-              if (this.cart[i] === id) {
-                count++;
-              }
-            }
-            return count;
-          },
-
-          itemsLeft(lesson) {
-            return lesson.inventory - this.cartCount(lesson.id);
-          },
+        addToCart: function (lesson) {
+          this.cart.push(lesson.id);
         },
 
-        computed: {
-          itemsInCart: function () {
-            return this.cart.length || "";
-          },
-
-          sortedLessons() {
-            function compare(a, b) {
-              if (a.price > b.price) return 1;
-              if (a.price < b.price) return -1;
-              return 0;
-            }
-
-            let filteredLessons = this.lessons.filter(lesson =>
-              lesson.subject.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-              lesson.location.toLowerCase().includes(this.searchQuery.toLowerCase())
-            );
-
-            return filteredLessons.sort(compare);
-          },
-
-          isButtonDisabled() {
-            return (
-              this.order.name.trim() === "" || this.order.number.trim() === ""
-            );
-          },
+        submitCheckoutForm() {
+          if (!this.isButtonDisabled) { // button enabled if both fields entered
+            alert("Thank you, your order has been placed.");
+          }
         },
-      });
-    </script>
-  </body>
+
+        validateName() { // regex to check whether name uses the letters A-Z
+          this.order.name = this.order.name.replace(/[^A-Za-z]/g, "");
+        },
+        canAddToCart: function (lesson) {
+          return lesson.inventory > this.cartCount(lesson.id);
+        },
+
+        cartCount(id) {
+          let count = 0;
+          for (let i = 0; i < this.cart.length; i++) {
+            if (this.cart[i] === id) {
+              count++;
+            }
+          }
+          return count;
+        },
+
+        itemsLeft(lesson) {
+          return lesson.inventory - this.cartCount(lesson.id);
+        },
+      },
+
+      // Computed properties
+      computed: {
+        itemsInCart: function () {
+          return this.cart.length || "";
+        },
+
+        addedLessons() {
+          return this.lessons.filter(lesson => this.cart.includes(lesson.id));
+        }, // display added lessons
+
+        sortedLessons() {
+          function compare(a, b) {
+            if (a.price > b.price) return 1;
+            if (a.price < b.price) return -1;
+            return 0;
+          }
+
+          // search box function for subject, location and price
+          let filteredLessons = this.lessons.filter(lesson =>
+            lesson.subject.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+            lesson.location.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+            lesson.price.toString().includes(this.searchQuery.toLowerCase())
+
+          );
+
+          return filteredLessons.sort(compare);
+        },
+
+        // button is enabled when both name and number fields entered
+        isButtonDisabled() {
+          return (
+            this.order.name.trim() === "" || this.order.number.trim() === ""
+          ); 
+        },
+      },
+    });
+  </script>
+</body>
 
 </html>

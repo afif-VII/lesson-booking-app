@@ -8,7 +8,7 @@
   <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-  <script src="lessons.js"></script>
+  <!-- <script src="lessons.js"></script> -->
   <title>Lesson booking app</title>
 </head>
 
@@ -98,13 +98,36 @@
       data: {
         sitename: "Lesson booking app",
         showLessons: true,
-        lessons: lessons,
+        lessons: [],//lessons,
         cart: [],
         order: {
           name: "",
           number: "",
         },
         searchQuery: "", // search box
+      },
+
+      created: function() {
+        // fetch("http://localhost:3000/collections/lessons").then(
+        //   function(response) {
+        //     response.text().then (
+        //       function(text) {
+        //         alert(text);
+        //       }
+        //     )
+        //   }
+        // )
+        fetch("http://localhost:3000/collections/lessons").then(
+          function (response) {
+            response.json().then(
+              function (json) {
+                //alert(json);
+                //console.log(json);
+                webstore.lessons = json;
+              }
+            )
+          }
+        );
       },
 
       // Methods

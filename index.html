@@ -108,21 +108,10 @@
       },
 
       created: function() {
-        // fetch("http://localhost:3000/collections/lessons").then(
-        //   function(response) {
-        //     response.text().then (
-        //       function(text) {
-        //         alert(text);
-        //       }
-        //     )
-        //   }
-        // )
         fetch("http://localhost:3000/collections/lessons").then(
           function (response) {
             response.json().then(
-              function (json) {
-                //alert(json);
-                //console.log(json);
+              function (json) { 
                 webstore.lessons = json;
               }
             )

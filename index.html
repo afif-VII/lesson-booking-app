@@ -25,7 +25,12 @@
       </button>
       <!-- Search box for users -->
       <input type="text" v-model.trim="searchQuery" placeholder="Search lessons" />
-    </header>
+      </button>
+
+      <!-- <button @click="saveLessonToDB">
+        <span class="fas fa-save"></span>
+        Test lesson button to DB
+    </header> -->
     </header>
 
     <!-- If statement to display either lessons page or checkout page -->
@@ -108,7 +113,8 @@
       },
 
       created: function() {
-        fetch("http://localhost:3000/collections/lessons").then(
+        //fetch("http://localhost:3000/collections/lessons").then(
+        fetch("https://lessonsapp-env.eba-3nvapgfm.eu-west-2.elasticbeanstalk.com/collections/lessons").then(
           function (response) {
             response.json().then(
               function (json) { 

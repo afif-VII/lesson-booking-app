@@ -112,7 +112,7 @@
         searchQuery: "", // search box
       },
 
-      created: function() {
+      created: function() { // fetch for lessons
         fetch("https://lessonsapp-env.eba-3nvapgfm.eu-west-2.elasticbeanstalk.com/collections/lessons").then(
           function (response) {
             response.json().then(

@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -24,7 +24,13 @@
         Checkout
       </button>
       <!-- Search box for users -->
-      <input type="text" v-model.trim="searchQuery" @input="handleSearch" placeholder="Search lessons" />
+      <input type="text" v-model.trim="searchQuery" placeholder="Search lessons" />
+      </button>
+
+      <!-- <button @click="saveLessonToDB">
+        <span class="fas fa-save"></span>
+        Test lesson button to DB
+    </header> -->
     </header>
 
     <!-- If statement to display either lessons page or checkout page -->
@@ -35,7 +41,9 @@
 
           <!-- Class for all lesson images-->
           <figure>
-            <img class="lessonIcon" :src="'https://lessonsapp-env.eba-3nvapgfm.eu-west-2.elasticbeanstalk.com/images/' + lesson.image" alt="lesson image" />
+            <img class="lessonIcon" v-bind:src="lesson.image" alt="lesson image" />
+          </figure>
+
           <p v-text="lesson.location"></p>
           <p>Price: £{{lesson.price}}</p>
 
@@ -48,15 +56,6 @@
           <span v-else>Book now!</span>
         </div>
       </main>
-    </div>
-
-    <div v-if="searchResults.length > 0">
-      <h2>Search Results</h2>
-      <ul>
-        <li v-for="result in searchResults" :key="result.id">
-          {{ result.subject }} - {{ result.location }} - £{{ result.price }}
-        </li>
-      </ul>
     </div>
 
     <!-- Else statement to show checkout page when clicked-->
@@ -111,7 +110,6 @@
           number: "",
         },
         searchQuery: "", // search box
-        searchResults: [],
       },
 
       created: function() {
@@ -125,21 +123,11 @@
           }
         );
       },
-      
 
       // Methods
       methods: {
         showCheckout: function () {
           this.showLessons = this.showLessons ? false : true; // toggle between lesson and checkout page
-        },
-
-        handleSearch: function () {
-          fetch(`https://lessonsapp-env.eba-3nvapgfm.eu-west-2.elasticbeanstalk.com/search?q=${this.searchQuery}`)
-            .then(response => response.json())
-            .then(results => {
-              this.searchResults = results;
-            })
-            .catch(error => console.error('Error fetching search results:', error));
         },
 
         addToCart: function (lesson) {

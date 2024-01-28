@@ -41,7 +41,7 @@
 
           <!-- Class for all lesson images-->
           <figure>
-            <img class="lessonIcon" v-bind:src="lesson.image" alt="lesson image" />
+            <img class="lessonIcon" v-bind:src="'https://lessonsapp-env.eba-3nvapgfm.eu-west-2.elasticbeanstalk.com/images/' + lesson.image" alt="lesson image" />
           </figure>
 
           <p v-text="lesson.location"></p>

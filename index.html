@@ -6,9 +6,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
+
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  <link rel="manifest" href="lessonsapp.webmanifest">
+
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-  <!-- <script src="lessons.js"></script> -->
+  <script src="lessons.js"></script>
   <title>Lesson booking app</title>
 </head>
 
@@ -103,7 +107,8 @@
       data: {
         sitename: "Lesson booking app",
         showLessons: true,
-        lessons: [], //lessons,
+        lessons: lessons,
+        //lessons: [],
         cart: [],
         order: {
           name: "",
@@ -113,15 +118,18 @@
       },
 
       created: function() {
-        fetch("https://lessonsapp-env.eba-3nvapgfm.eu-west-2.elasticbeanstalk.com/collections/lessons").then(
-          function (response) {
-            response.json().then(
-              function (json) { 
-                webstore.lessons = json;
-              }
-            )
-          }
-        );
+        if ("serviceWorker" in navigator) {
+          navigator.serviceWorker.register("service-worker.js");
+        }
+        // fetch("https://lessonsapp-env.eba-3nvapgfm.eu-west-2.elasticbeanstalk.com/collections/lessons").then(
+        //   function (response) {
+        //     response.json().then(
+        //       function (json) { 
+        //         webstore.lessons = json;
+        //       }
+        //     )
+        //   }
+        // );
       },
 
       // Methods

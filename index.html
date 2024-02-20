@@ -12,7 +12,7 @@
 
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-  <script src="lessons.js"></script>
+  <!-- <script src="lessons.js"></script> -->
   <title>Lesson booking app</title>
 </head>
 
@@ -107,8 +107,10 @@
       data: {
         sitename: "Lesson booking app",
         showLessons: true,
-        lessons: lessons,
-        //lessons: [],
+        // lessons: lessons,
+        lessons: [],
+        serverURL: "http://localhost:3000/collections/lessons",
+        // serverURL: "https://lessonsapp-env.eba-3nvapgfm.eu-west-2.elasticbeanstalk.com/collections/lessons",
         cart: [],
         order: {
           name: "",
@@ -121,15 +123,17 @@
         if ("serviceWorker" in navigator) {
           navigator.serviceWorker.register("service-worker.js");
         }
+        
         // fetch("https://lessonsapp-env.eba-3nvapgfm.eu-west-2.elasticbeanstalk.com/collections/lessons").then(
-        //   function (response) {
-        //     response.json().then(
-        //       function (json) { 
-        //         webstore.lessons = json;
-        //       }
-        //     )
-        //   }
-        // );
+        fetch(this.serverURL).then(
+          function (response) {
+            response.json().then(
+              function (json) { 
+                webstore.lessons = json;
+              }
+            )
+          }
+        );
       },
 
       // Methods

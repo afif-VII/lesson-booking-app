@@ -1,7 +1,7 @@
 var cacheName = "lessonsapp-v1";
 var cacheFiles = [
   "index.html",
-  "lessons.js",
+  // "lessons.js",
   "images/icon-32.png",
   "images/icon-512.png",
   "images/art.png",
